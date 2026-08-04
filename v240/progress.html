@@ -1,0 +1,177 @@
+<!--
+ * @Author: httishere
+ * @Date: 2021-08-13 09:37:29
+ * @LastEditTime: 2024-03-07 16:48:02
+ * @LastEditors: Tina Huang
+ * @Description: In User Settings Edit
+ * @FilePath: /mobile-frontend-lanqb/Users/httishere/workspace/httishere/notion/progress.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Progress Widget No Clock</title>
+    <script src="../flexibleMerge.js"></script>
+    <script src="../lib/global.js?v=20260129"></script>
+    <script src="../lib/crypto-js.min.js"></script>
+    <style>
+        body,
+        html {
+            background-color: transparent !important;
+            padding: 0;
+            margin: 0;
+            color: #96a6c6;
+        }
+
+        .progress-group {
+            width: 10rem;
+            margin: 0 auto;
+            font-family: "Share Tech Mono", monospace;
+            padding: .266667rem;
+            box-sizing: border-box;
+            font-size: .266667rem;
+            color: #96a6c6;
+        }
+
+        #right {
+            width: 100%;
+        }
+
+        li {
+            list-style: none;
+            width: 5.5rem;
+            height: .3rem;
+            border-radius: .3rem;
+            background: rgba(150, 166, 198, 0.2);
+            color: #96a6c6;
+            overflow: hidden;
+            margin: 0 .2rem;
+        }
+
+        li div {
+            background: #96a6c6;
+            height: 100%;
+            width: 0;
+            border-radius: .3rem;
+            font-size: 12px;
+            text-align: right;
+            line-height: 20px;
+        }
+
+        .progress-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            color: #96a6c6;
+        }
+
+        .progress-item>span {
+            font-size: .373333rem;
+            width: 1.2rem;
+        }
+
+        .progress-item>em {
+            font-style: normal;
+            font-size: .32rem;
+            color: #96a6c6;
+            white-space: nowrap;
+        }
+
+        html[theme="dark"],
+        html[theme="dark"] body {
+            background-color: transparent !important;
+            color: #96a6c6;
+        }
+
+        html[theme="dark"] li {
+            background-color: rgba(150, 166, 198, 0.2);
+        }
+
+        html[theme="dark"] li div {
+            background-color: #96a6c6;
+        }
+    </style>
+</head>
+
+<body>
+    <ul class="progress-group" id="box">
+        <div id="right">
+            <div class="progress-item" id="year-bar">
+                <span>Year</span>
+                <li id="year">
+                    <div></div>
+                </li>
+                <em></em>
+            </div>
+            <div class="progress-item" id="month-bar">
+                <span>Month</span>
+                <li id="month">
+                    <div></div>
+                </li>
+                <em></em>
+            </div>
+            <div class="progress-item" id="week-bar">
+                <span>Week</span>
+                <li id="week">
+                    <div></div>
+                </li>
+                <em></em>
+            </div>
+        </div>
+    </ul>
+</body>
+<script>
+    window.onload = function () {
+        const params = getAllParams(CryptoJS);
+        handleDarkMode(params);
+        if (params.font_color) {
+            const font_color = hexToRgba(params.font_color),
+                _bg = hexToRgba(params.font_color, 0.2);
+            document.getElementById('box').style.color = font_color.rgba;
+            document.getElementById('year').style.backgroundColor = _bg.rgba;
+            document.getElementById('year').children[0].style.backgroundColor = font_color.rgba;
+            document.getElementById('week').style.backgroundColor = _bg.rgba;
+            document.getElementById('week').children[0].style.backgroundColor = font_color.rgba;
+            document.getElementById('month').style.backgroundColor = _bg.rgba;
+            document.getElementById('month').children[0].style.backgroundColor = font_color.rgba;
+        }
+    }
+    let Days = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    let now_date = new Date(),
+        _time = now_date.getTime(),
+        now_year = now_date.getFullYear();
+
+    // 周
+    let _day = now_date.getDay();
+    _day = _day ? _day : 7;
+    let _week = document.getElementById('week');
+    let week_rate = (_day * 100 / 7).toFixed(0);
+    _week.children[0].style.width = `${_day * 100 / 7}%`;
+    document.getElementById('week-bar').children[2].innerHTML = `${_day}/7 (${week_rate}%)`;
+
+    // 月
+    if (now_year % 4 === 0 && now_year % 100 != 0) {
+        Days[2] = 29;
+    }
+    let cur_month = now_date.getMonth() + 1,
+        month_day = now_date.getDate();
+
+    let month_rate = (month_day * 100 / Days[cur_month]).toFixed(0);
+    document.getElementById('month').children[0].style.width = `${month_day * 100 / Days[cur_month]}%`;
+    document.getElementById('month-bar').children[2].innerHTML = `${month_day}/${Days[cur_month]} (${month_rate}%)`;
+
+    // 年
+    let year_start = new Date(`${now_year}/1/1`).getTime();
+    let _du = _time - year_start;
+    let days = Math.ceil(_du / (24 * 60 * 60 * 1000));
+    let total = now_year % 4 === 0 && now_year % 100 !== 0 ? 366 : 365;
+    let _year = document.getElementById('year');
+    let year_rate = (days * 100 / total).toFixed(0);
+    
+    _year.children[0].style.width = `${days * 100 / total}%`;
+    document.getElementById('year-bar').children[2].innerHTML = `${days}/${total} (${year_rate}%)`;
+</script>
+</html>
