@@ -20,20 +20,20 @@
     <style>
         body,
         html {
-            background-color: #96a6c6;
+            background-color: transparent !important;
             padding: 0;
             margin: 0;
+            color: #96a6c6;
         }
 
         .progress-group {
             width: 10rem;
             margin: 0 auto;
-            /* font-family: Verdana; */
             font-family: "Share Tech Mono", monospace;
-            /* height: 100vh; */
             padding: .266667rem;
             box-sizing: border-box;
             font-size: .266667rem;
+            color: #96a6c6;
         }
 
         #left {
@@ -49,14 +49,14 @@
             width: 6rem;
             height: .3rem;
             border-radius: .3rem;
-            background: #f3f3f3;
+            background: rgba(150, 166, 198, 0.2);
             color: #96a6c6;
             overflow: hidden;
             margin: 0 .2rem;
         }
 
         li div {
-            background: #333333;
+            background: #96a6c6;
             height: 100%;
             width: 0;
             border-radius: .3rem;
@@ -65,7 +65,6 @@
             line-height: 20px;
         }
 
-        /* li div span {display: inline-block; box-sizing: border-box; text-align: right; font-size: .426667rem;} */
         h2 {
             margin: 0;
             line-height: 28px;
@@ -81,13 +80,14 @@
         .countdown span {
             width: 50px;
             border-radius: 10px;
-            border: 2px solid #333333;
+            border: 2px solid #96a6c6;
             text-align: center;
             height: 50px;
             line-height: 50px;
             display: inline-block;
             margin: 0 20px;
             font-size: 24px;
+            color: #96a6c6;
         }
 
         .top {
@@ -98,79 +98,45 @@
             display: flex;
             align-items: center;
             margin-bottom: 10px;
+            color: #96a6c6;
         }
 
         .progress-item>span {
             font-size: .373333rem;
             width: 1.2rem;
-            /* text-align: right; */
         }
 
         .progress-item>em {
             font-style: normal;
+            color: #96a6c6;
         }
-
-        /* #year-bar {
-            color: rgba(167, 119, 119, 1);
-        }
-
-        #year {
-            background-color: rgba(167, 119, 119, .2);
-        }
-
-        #year div {
-            background-color: rgba(167, 119, 119, 1);
-        }
-
-        #month-bar {
-            color: rgba(165, 169, 187, 1);
-        }
-
-        #month {
-            background-color: rgba(165, 169, 187, .2);
-        }
-
-        #month div {
-            background-color: rgba(165, 169, 187, 1);
-        }
-
-        #week-bar {
-            color: rgba(213, 182, 176, 1);
-        }
-
-        #week {
-            background-color: rgba(213, 182, 176, .2);
-        }
-
-        #week div {
-            background-color: rgba(213, 182, 176, 1);
-        } */
 
         #clock {
             font-family: "Share Tech Mono", monospace;
-            /* font-family: Verdana; */
             text-align: center;
             letter-spacing: 0.05em;
             font-size: 1.2rem;
+            color: #96a6c6;
         }
 
         #time {
             margin: 0;
             margin-bottom: 20px;
+            color: #96a6c6;
         }
 
         html[theme="dark"],
         html[theme="dark"] body {
-            background-color: #191919;
+            background-color: transparent !important;
             color: #96a6c6;
         }
 
         html[theme="dark"] li {
-            background-color: rgba(255, 255, 255, .3);
+            background-color: rgba(150, 166, 198, 0.2);
         }
 
         html[theme="dark"] li div {
-            background-color: rgba(255, 255, 255, .9);
+            background-color: #96a6c6;
         }
     </style>
 </head>
@@ -179,7 +145,6 @@
     <ul class="progress-group" id="box">
 
         <div id="clock">
-            <!-- <p class="date"></p> -->
             <p id="time"></p>
         </div>
         <div id="right">
@@ -212,10 +177,8 @@
         const params = getAllParams(CryptoJS);
         handleDarkMode(params);
         if (params.font_color) {
-            console.log(params.font_color)
             const font_color = hexToRgba(params.font_color),
                 _bg = hexToRgba(params.font_color, 0.2);
-            console.log(font_color, _bg)
             document.getElementById('box').style.color = font_color.rgba;
             document.getElementById('year').style.backgroundColor = _bg.rgba;
             document.getElementById('year').children[0].style.backgroundColor = font_color.rgba;
@@ -274,5 +237,4 @@
         document.getElementById('time').innerHTML = `${h}:${m}:${s}`;
     }
 </script>
-
 </html>
